@@ -85,7 +85,7 @@ namespace EbayCrawler
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string _wait = "Please wait while the system searches...";
+            string _wait = "Please wait while the system searches... and we learn to use GIT";
             doSearch();
             MessageBox.Show(_wait);
             
@@ -232,7 +232,7 @@ namespace EbayCrawler
 
         private void RunCrawler()
         {
-           
+           //This will run the crawler
         }
     }
     
