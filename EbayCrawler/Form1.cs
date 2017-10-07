@@ -236,6 +236,7 @@ namespace EbayCrawler
             string _wait = "Please wait a moment";
             MessageBox.Show(_wait);
             //Another comment
+            //the bunny rabbit is always faster than the tortoise!
         }
     }
     
