@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Diagnostics;
 
 namespace EbayCrawler
 {
@@ -85,8 +86,12 @@ namespace EbayCrawler
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            doSearch();
-            
+            // doSearch();
+            //GetCatagoryPageLinks();
+            //GetCatagoryLinks();
+         
+             GettNode();
+
         }
 
         private void doSearch()
@@ -232,6 +237,88 @@ namespace EbayCrawler
         {
            
         }
+
+        private List<string> GetCatagoryPageLinks()
+        {
+            List<string> pageLinks = new List<string>();
+            string pageUrl = "https://pages.ebay.com/sitemap.html";
+
+            HtmlWeb page = new HtmlWeb();
+            var doc = page.Load(pageUrl);
+
+            var parentNodes = doc.DocumentNode.SelectNodes("//*[@class='itemcols']/li/a");
+
+            foreach (HtmlNode node in parentNodes)
+            {
+                string nodeItem = node.Attributes["href"].Value;
+                pageLinks.Add(nodeItem);
+            }
+
+            return pageLinks;
+        }
+
+        private Dictionary<string, string> GetCatagoryLinks()
+        {
+            Dictionary<string, string> pageLinks = new Dictionary<string, string>();
+            string pageUrl = "https://pages.ebay.com/sitemap.html";
+
+            HtmlWeb page = new HtmlWeb();
+            var doc = page.Load(pageUrl);
+
+            var parentNodes = doc.DocumentNode.SelectNodes("//*[@class='itemcols']/li/a");
+            var contentNode = doc.DocumentNode.SelectNodes("//*[@class='h3content']");
+
+
+            foreach (HtmlNode node in parentNodes)
+            {
+                string nodeItemLink = node.Attributes["href"].Value;
+                string nodeItemText = node.InnerText;
+                if (!pageLinks.ContainsKey(nodeItemText))
+                {
+                   pageLinks.Add(nodeItemText, nodeItemLink);
+                }
+            }
+                
+            return pageLinks;
+        }
+
+        public void GettNode()
+        {
+           // Stopwatch sw = new System.Diagnostics.Stopwatch();
+            //sw.Start();
+            string url = "https://www.ebay.com/b/Animal-Collectibles/1335/bn_1853571?LH_Complete=1";
+            itemList = new List<Item>();
+            HtmlWeb page = new HtmlWeb();
+            var doc = page.Load(url);
+
+            var listingNode = doc.DocumentNode.SelectNodes("//*[@class='s-item__info clearfix']");
+            int i = 0;
+            for(int y = 0; y < listingNode.Count; y++)
+            {
+                
+                string title = listingNode[y].ChildNodes[0].ChildNodes[0].InnerText;
+                string price = listingNode[y].ChildNodes[2].ChildNodes[0].InnerText;
+                //string soldDate = listingNode[y].ChildNodes[1].InnerText;
+              //  string imgUrl = listingNode[y].ChildNodes[1].Attributes["src"].Value;
+               // int index = soldDate.Length;
+                //string titleFinal = title.Remove(0, 18);
+                itemList.Add(new Item(title, "", price, "", "", ""));
+
+                ListViewItem lvi = new ListViewItem(itemList[i].id);
+                lvi.SubItems.Add(itemList[y].title);
+                lvi.SubItems.Add(itemList[y].price);
+                lvi.SubItems.Add("");
+                lvi.SubItems.Add(itemList[y].imglink);
+                lvData.Items.Add(lvi);
+                i++;
+            }
+            //sw.Stop();
+            //MessageBox.Show(sw.Elapsed.ToString(), "Counter", MessageBoxButtons.OK);
+
+            //this is a test to see if the change is taken
+           
+        }
+
     }
     
 }
