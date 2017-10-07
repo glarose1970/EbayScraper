@@ -233,7 +233,7 @@ namespace EbayCrawler
         private void RunCrawler()
         {
             //This will run the crawler
-            string _wait = "Please wait";
+            string _wait = "Please wait a moment";
             MessageBox.Show(_wait);
         }
     }
