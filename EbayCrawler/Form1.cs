@@ -85,7 +85,9 @@ namespace EbayCrawler
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            string _wait = "Please wait while the system searches...";
             doSearch();
+            MessageBox.Show(_wait);
             
         }
 
